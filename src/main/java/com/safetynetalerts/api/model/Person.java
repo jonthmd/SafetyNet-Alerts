@@ -1,0 +1,20 @@
+package com.safetynetalerts.api.model;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "persons")
+public class Person {
+
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String city;
+    private String zip;
+    private String phone;
+    private String email;
+
+}
