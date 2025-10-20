@@ -1,10 +1,10 @@
 package com.safetynetalerts.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynetalerts.api.dto.POJODTO;
-import com.safetynetalerts.api.model.POJO;
+import com.safetynetalerts.api.dto.modelDTO;
+import com.safetynetalerts.api.model.JsonData;
 import com.safetynetalerts.api.model.Person;
-import com.safetynetalerts.api.service.POJOService;
+import com.safetynetalerts.api.mapper.modelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,15 +25,15 @@ public class ApiApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        POJO data = mapper.readValue(new File("src/main/resources/data.json"), POJO.class);
+        JsonData data = mapper.readValue(new File("src/main/resources/data.json"), JsonData.class);
 
         String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(data);
         System.out.println(prettyJson);
 
         List<Person> persons = data.getPersons();
-        List<POJODTO> pojodtoList = POJOService.pojodtoList(persons);
+        List<modelDTO> modelDTOList = modelMapper.modeldtoList(persons);
 
-        for(POJODTO pojo : pojodtoList){
+        for(modelDTO pojo : modelDTOList){
             System.out.println(pojo);
         }
     }
