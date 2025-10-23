@@ -8,6 +8,8 @@ import java.util.List;
 
 public class modelMapper {
 
+    //tester mapstruct
+
     public static modelDTO toDTO(Person person) {
         modelDTO dto = new modelDTO();
         dto.setFirstName(person.getFirstName());

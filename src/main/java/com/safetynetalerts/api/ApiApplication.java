@@ -14,27 +14,9 @@ import java.io.File;
 import java.util.List;
 
 @SpringBootApplication
-public class ApiApplication implements CommandLineRunner {
-
-    @Autowired
-    ObjectMapper mapper;
+public class ApiApplication {
 
     public static void main(String[] args) {
 		SpringApplication.run(ApiApplication.class, args);
 	}
-
-    @Override
-    public void run(String... args) throws Exception {
-        JsonData data = mapper.readValue(new File("src/main/resources/data.json"), JsonData.class);
-
-        String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(data);
-        System.out.println(prettyJson);
-
-        List<Person> persons = data.getPersons();
-        List<modelDTO> modelDTOList = modelMapper.modeldtoList(persons);
-
-        for(modelDTO pojo : modelDTOList){
-            System.out.println(pojo);
-        }
-    }
 }
