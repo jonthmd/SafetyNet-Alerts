@@ -1,5 +1,6 @@
 package com.safetynetalerts.api.controller;
 
+import com.safetynetalerts.api.dto.PersonDTO;
 import com.safetynetalerts.api.model.Person;
 import com.safetynetalerts.api.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,26 +25,30 @@ public class PersonController {
     @GetMapping("/persons")
     @Operation(summary = "Get all persons.", description = "Returns the complete list of persons recorded in the JSON.")
     public List<Person> getAll(){
-        log.debug("Found persons : {}", personService.getPersonRepository().getAll().size());
         return personService.getAllPersons();
+    }
+
+    @GetMapping("/person/{firstName}/{lastName}")
+    @Operation(summary = "Get a person.", description = "Returns a person by entering firstname and lastname.")
+    public Person getPerson(@PathVariable String firstName, @PathVariable String lastName){
+        return personService.getPerson(firstName, lastName);
     }
 
     @PostMapping("/person")
     @Operation(summary = "Add a person.", description = "Adding a person by using firstname, lastname, address, city, zip, phone and email.")
-    public void addPerson(Person person){
+    public void addPerson(@RequestBody Person person){
         personService.addPerson(person);
     }
 
-    //TO DO
-    @PutMapping("/person")
+    @PutMapping("/person/{firstName}/{lastName}")
     @Operation(summary = "Edit a person.", description = "Edit a person, except his firstname and lastname.")
-    public void updatePerson(){
-        personService.updatePerson(person);
+    public void updatePerson(@PathVariable String firstName, @PathVariable String lastName, @RequestBody PersonDTO dto){
+        personService.updatePerson(firstName, lastName, dto);
     }
 
-    @DeleteMapping("/person")
+    @DeleteMapping("/person/{firstName}/{lastName}")
     @Operation(summary = "Delete a person.", description = "Delete a person by using firstname and lastname.")
-    public void deletePerson(String firstName, String lastName){
+    public void deletePerson(@PathVariable String firstName, @PathVariable String lastName){
         personService.deletePerson(firstName, lastName);
     }
 }

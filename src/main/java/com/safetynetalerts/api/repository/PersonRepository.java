@@ -22,12 +22,13 @@ public class PersonRepository {
         return data.getData().getPersons();
     }
 
-    public void getPerson(String firstName, String lastName){
+    public Person getPerson(String firstName, String lastName){
         for(Person person : getAll()){
            if (person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName)){
-               return;
+               return person;
            }
         }
+        return null;
     }
 
     public void addPerson(Person person){
@@ -36,7 +37,7 @@ public class PersonRepository {
 
     public void updatePerson(Person updated){
         for (Person current : getAll()){
-            if (current.getFirstName().equals(updated.getFirstName()) && current.getLastName().equals(updated.getLastName())){
+            if (current.getFirstName().equalsIgnoreCase(updated.getFirstName()) && current.getLastName().equalsIgnoreCase(updated.getLastName())){
                 current.setAddress(updated.getAddress());
                 current.setCity(updated.getCity());
                 current.setZip(updated.getZip());
@@ -47,7 +48,7 @@ public class PersonRepository {
     }
 
     public void deletePerson(String firstName, String lastName){
-        getAll().removeIf(person -> person.getFirstName().equals(firstName) && person.getLastName().equals(lastName));
+        getAll().removeIf(person -> person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName));
     }
 
 }

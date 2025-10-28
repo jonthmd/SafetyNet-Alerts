@@ -1,6 +1,8 @@
 package com.safetynetalerts.api.service;
 
 import com.safetynetalerts.api.controller.PersonController;
+import com.safetynetalerts.api.dto.PersonDTO;
+import com.safetynetalerts.api.mapper.PersonUpdateMapper;
 import com.safetynetalerts.api.model.Person;
 import com.safetynetalerts.api.repository.PersonRepository;
 import lombok.Data;
@@ -22,19 +24,21 @@ public class PersonService {
         return personRepository.getAll();
     }
 
-    public void getPerson(@PathVariable String firstName, String lastName){
-        personRepository.getPerson(firstName, lastName);
+    public Person getPerson(String firstName, String lastName){
+       return personRepository.getPerson(firstName, lastName);
     }
 
-    public void addPerson(@RequestBody Person person){
+    public void addPerson(Person person){
         personRepository.addPerson(person);
     }
 
-    public void updatePerson(@RequestBody Person person){
+    public void updatePerson(String firstName, String lastName, PersonDTO dto){
+        Person person = personRepository.getPerson(firstName, lastName);
+        PersonUpdateMapper.toUpdateDTO(person, dto);
         personRepository.updatePerson(person);
     }
 
-    public void deletePerson(@PathVariable String firstName, String lastName){
+    public void deletePerson(String firstName, String lastName){
         personRepository.deletePerson(firstName, lastName);
     }
 }
