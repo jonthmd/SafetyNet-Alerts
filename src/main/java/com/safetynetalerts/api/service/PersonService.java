@@ -6,6 +6,8 @@ import com.safetynetalerts.api.repository.PersonRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -20,15 +22,19 @@ public class PersonService {
         return personRepository.getAll();
     }
 
-    public void addPerson(Person person){
+    public void getPerson(@PathVariable String firstName, String lastName){
+        personRepository.getPerson(firstName, lastName);
+    }
+
+    public void addPerson(@RequestBody Person person){
         personRepository.addPerson(person);
     }
 
-    public void updatePerson(Person person){
+    public void updatePerson(@RequestBody Person person){
         personRepository.updatePerson(person);
     }
 
-    public void deletePerson(String firstName, String lastName){
+    public void deletePerson(@PathVariable String firstName, String lastName){
         personRepository.deletePerson(firstName, lastName);
     }
 }

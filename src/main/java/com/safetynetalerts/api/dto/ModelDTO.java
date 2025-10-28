@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class modelDTO {
+public class ModelDTO {
 
     private String firstName;
     private String lastName;
-    private String address;
+//    private String address;
 
 }

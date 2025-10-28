@@ -6,7 +6,7 @@ import lombok.Data;
 public class FireStation {
 
     //test rajout id
-    private Long id;
+//    private Long id;
 
     private String address;
     private int station;

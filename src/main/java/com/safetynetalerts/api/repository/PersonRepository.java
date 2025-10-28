@@ -1,12 +1,11 @@
 package com.safetynetalerts.api.repository;
 
 import com.safetynetalerts.api.model.Person;
-import com.safetynetalerts.api.service.JsonService;
+import com.safetynetalerts.api.data.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -14,15 +13,21 @@ import java.util.List;
 public class PersonRepository {
 
     @Autowired
-    private JsonService jsonService;
+    private Data data;
 
     public List<Person> getAll(){
+//        if (data.getData() == null || data.getData().getPersons() == null) {
+//            log.debug("Nothing!");
+//        }
+        return data.getData().getPersons();
+    }
 
-        if (jsonService.getData() == null || jsonService.getData().getPersons() == null) {
-            log.debug("Nothing!");
+    public void getPerson(String firstName, String lastName){
+        for(Person person : getAll()){
+           if (person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName)){
+               return;
+           }
         }
-
-        return jsonService.getData().getPersons();
     }
 
     public void addPerson(Person person){

@@ -1,16 +1,13 @@
 package com.safetynetalerts.api.controller;
 
 import com.safetynetalerts.api.model.Person;
-import com.safetynetalerts.api.service.JsonService;
 import com.safetynetalerts.api.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +25,25 @@ public class PersonController {
     @Operation(summary = "Get all persons.", description = "Returns the complete list of persons recorded in the JSON.")
     public List<Person> getAll(){
         log.debug("Found persons : {}", personService.getPersonRepository().getAll().size());
-        return personService.getPersonRepository().getAll();
+        return personService.getAllPersons();
+    }
+
+    @PostMapping("/person")
+    @Operation(summary = "Add a person.", description = "Adding a person by using firstname, lastname, address, city, zip, phone and email.")
+    public void addPerson(Person person){
+        personService.addPerson(person);
+    }
+
+    //TO DO
+    @PutMapping("/person")
+    @Operation(summary = "Edit a person.", description = "Edit a person, except his firstname and lastname.")
+    public void updatePerson(){
+        personService.updatePerson(person);
+    }
+
+    @DeleteMapping("/person")
+    @Operation(summary = "Delete a person.", description = "Delete a person by using firstname and lastname.")
+    public void deletePerson(String firstName, String lastName){
+        personService.deletePerson(firstName, lastName);
     }
 }

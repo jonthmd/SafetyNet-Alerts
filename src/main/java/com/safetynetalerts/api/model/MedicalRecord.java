@@ -10,7 +10,7 @@ import java.util.Set;
 public class MedicalRecord {
 
     //test rajout id
-    private Long id;
+//    private Long id;
 
     private Person person;
 
