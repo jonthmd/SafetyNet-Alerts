@@ -9,9 +9,6 @@ import java.util.Set;
 @Data
 public class MedicalRecord {
 
-    //test rajout id
-//    private Long id;
-
     private Person person;
 
     @JsonFormat(pattern = "MM/dd/yyyy")
