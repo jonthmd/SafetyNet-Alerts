@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/person")
-@Tag(name = "persons", description = "Persons list.")
+@Tag(name = "Persons", description = "Persons list.")
 public class PersonController {
 
     private final PersonService personService;
@@ -40,7 +40,7 @@ public class PersonController {
     }
 
     @PutMapping("/{firstName}/{lastName}")
-    @Operation(summary = "Edit a person.", description = "Edit a person, except his firstname and lastname.")
+    @Operation(summary = "Edit a person.", description = "Edit a person, except firstname and lastname.")
     public void updatePerson(@PathVariable String firstName, @PathVariable String lastName, @RequestBody PersonDTO personDTO){
         personService.update(firstName, lastName, personDTO);
     }

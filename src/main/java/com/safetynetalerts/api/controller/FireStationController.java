@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/firestation")
-@Tag(name = "firestations", description = "Fire Stations list.")
+@Tag(name = "Fire Stations", description = "Fire Stations list.")
 public class FireStationController {
 
     private final FireStationService fireStationService;
@@ -22,19 +22,19 @@ public class FireStationController {
     }
 
     @GetMapping
-    @Operation(summary = "Get all fire stations.", description = "Returns the complete list of fire stations.")
+    @Operation(summary = "Get all fire stations.", description = "Returns the complete list of fire stations recorded in the JSON.")
     public List<FireStationDTO> getAll(){
         return fireStationService.getAll();
     }
 
     @GetMapping("/{address}")
-    @Operation(summary = "Get one station.", description = "Returns a station by entering an address.")
+    @Operation(summary = "Get a fire station.", description = "Returns a station by entering address.")
     public FireStationDTO getFireStation(@PathVariable String address){
         return fireStationService.getByAddress(address);
     }
 
     @PostMapping
-    @Operation(summary = "Add a station.", description = "Adding a station by using station and address.")
+    @Operation(summary = "Add a fire station.", description = "Adding a station by using station and address.")
     public void addFireStation(@RequestBody FireStationDTO fireStationDTO){
         fireStationService.create(fireStationDTO);
     }
@@ -46,7 +46,7 @@ public class FireStationController {
     }
 
     @DeleteMapping("/{address}")
-    @Operation(summary = "Delete a fire station.", description = "Delete a fire station by using his address.")
+    @Operation(summary = "Delete a fire station.", description = "Delete a fire station by using address.")
     public void deleteFireStation(@PathVariable String address){
         fireStationService.delete(address);
     }

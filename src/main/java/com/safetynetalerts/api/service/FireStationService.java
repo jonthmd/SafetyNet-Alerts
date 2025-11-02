@@ -1,7 +1,6 @@
 package com.safetynetalerts.api.service;
 
 import com.safetynetalerts.api.dto.FireStationDTO;
-import com.safetynetalerts.api.dto.PersonDTO;
 
 import java.util.List;
 
