@@ -16,7 +16,7 @@ public class MedicalRecordDTO {
 
     private String firstName;
     private String lastName;
-    private LocalDate birthdate;
+    private String birthdate;
     private Set<String> medications;
     private Set<String> allergies;
 

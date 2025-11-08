@@ -21,7 +21,7 @@ public class MedicalRecordController {
         this.medicalRecordService = medicalRecordService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(summary = "Get all medical records.", description = "Returns the complete list of medical records recorded in the JSON.")
     public List<MedicalRecordDTO> getAll(){
        return medicalRecordService.getAll();

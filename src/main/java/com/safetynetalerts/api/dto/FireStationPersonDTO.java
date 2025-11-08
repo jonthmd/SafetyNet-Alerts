@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FireStationDTO {
+public class FireStationPersonDTO {
 
+    private String firstName;
+    private String lastName;
     private String address;
-    private String station;
+    private String phone;
 
 }

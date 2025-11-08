@@ -1,6 +1,7 @@
 package com.safetynetalerts.api.controller;
 
 import com.safetynetalerts.api.dto.FireStationDTO;
+import com.safetynetalerts.api.dto.FireStationStatsDTO;
 import com.safetynetalerts.api.service.FireStationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/firestation")
+@RequestMapping("/fireStation")
 @Tag(name = "Fire Stations", description = "Fire Stations list.")
 public class FireStationController {
 
@@ -21,7 +22,7 @@ public class FireStationController {
         this.fireStationService = fireStationService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(summary = "Get all fire stations.", description = "Returns the complete list of fire stations recorded in the JSON.")
     public List<FireStationDTO> getAll(){
         return fireStationService.getAll();
@@ -31,6 +32,12 @@ public class FireStationController {
     @Operation(summary = "Get a fire station.", description = "Returns a station by entering address.")
     public FireStationDTO getFireStation(@PathVariable String address){
         return fireStationService.getByAddress(address);
+    }
+
+    @GetMapping(params = "stationNumber")
+    @Operation(summary = "Get persons covered by station number.", description = "Returns persons covered by station number.")
+    public FireStationStatsDTO getPersonsByStationNumber(@RequestParam String stationNumber){
+        return fireStationService.getByStationNumber(stationNumber);
     }
 
     @PostMapping

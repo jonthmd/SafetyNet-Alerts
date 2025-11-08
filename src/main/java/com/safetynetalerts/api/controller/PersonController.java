@@ -21,7 +21,7 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @Operation(summary = "Get all persons.", description = "Returns the complete list of persons recorded in the JSON.")
     public List<PersonDTO> getAll(){
         return personService.getAll();
