@@ -48,6 +48,8 @@ public class DataRepository {
 
     private <T> List<T> getObjectFromJsonNode(String nodeName, Class<T> tClass) {
 
+        ObjectMapper privateMapper = new ObjectMapper();
+
         try {
             JsonNode node = rootNode.path(nodeName);
 
@@ -55,9 +57,9 @@ public class DataRepository {
                 return Collections.emptyList();
             }
 
-            CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, tClass);
+            CollectionType collectionType = privateMapper.getTypeFactory().constructCollectionType(List.class, tClass);
 
-            return mapper.readValue(node.traverse(), collectionType);
+            return privateMapper.readValue(node.traverse(), collectionType);
         } catch (IOException e) {
             return Collections.emptyList();
         }
