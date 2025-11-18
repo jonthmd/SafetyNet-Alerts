@@ -54,7 +54,7 @@ public class FireStationServiceImpl implements FireStationService {
     @Override
     public FireStationStatsDTO getByStationNumber(String stationNumber) {
         //1 chercher dans firestation, adresses avec station = stationNumber
-        List<String> listAdresses = dataRepository.getFireStations()
+        List<String> listAddresses = dataRepository.getFireStations()
                 .stream()
                 .filter(fireStation -> fireStation.getStation().equals(stationNumber))
                 .map(FireStation::getAddress)
@@ -63,7 +63,7 @@ public class FireStationServiceImpl implements FireStationService {
         //2 récupérer les personnes liées aux adresses trouvées (liste)
         List<FireStationPersonDTO> listPersons = dataRepository.getPersons()
                 .stream()
-                .filter(person -> listAdresses.contains(person.getAddress()))
+                .filter(person -> listAddresses.contains(person.getAddress()))
                 .map(fireStationPersonMapper::fireStationPersonToFireStationPersonDto)
                 .toList();
 

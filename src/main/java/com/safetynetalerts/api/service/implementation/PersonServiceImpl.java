@@ -1,9 +1,8 @@
 package com.safetynetalerts.api.service.implementation;
 
 import com.safetynetalerts.api.dto.*;
-import com.safetynetalerts.api.mapper.MedicalRecordMapper;
-import com.safetynetalerts.api.mapper.PersonChildMapper;
-import com.safetynetalerts.api.mapper.PersonMapper;
+import com.safetynetalerts.api.mapper.*;
+import com.safetynetalerts.api.model.FireStation;
 import com.safetynetalerts.api.model.Person;
 import com.safetynetalerts.api.repository.DataRepository;
 import com.safetynetalerts.api.service.PersonService;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.safetynetalerts.api.utils.DateFormatterUtil.calculateAge;
@@ -24,7 +24,7 @@ public class PersonServiceImpl implements PersonService {
     private final PersonChildMapper personChildMapper;
     private final MedicalRecordMapper medicalRecordMapper;
 
-    public PersonServiceImpl(DataRepository dataRepository, PersonMapper personMapper, PersonChildMapper personChildMapper, MedicalRecordMapper medicalRecordMapper) {
+    public PersonServiceImpl(DataRepository dataRepository, PersonMapper personMapper, PersonChildMapper personChildMapper, MedicalRecordMapper medicalRecordMapper, FireStationPersonMapper fireStationPersonMapper) {
         this.dataRepository = dataRepository;
         this.personMapper = personMapper;
         this.personChildMapper = personChildMapper;
@@ -41,7 +41,17 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonChildAlertDTO getChildByAddress(String address){
+    public PersonDTO getByFirstNameAndLastName(String firstName, String lastName) {
+        return dataRepository.getPersons()
+                .stream()
+                .filter(person -> person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName))
+                .findFirst()
+                .map(personMapper::personToPersonDto)
+                .orElse(null);
+    }
+
+    @Override
+    public PersonChildAlertDTO getChildren(String address){
         List<PersonChildDTO> listPersons = dataRepository.getPersons()
                 .stream()
                 .filter(person -> person.getAddress().equalsIgnoreCase(address))
@@ -85,13 +95,20 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonDTO getByFirstNameAndLastName(String firstName, String lastName) {
-        return dataRepository.getPersons()
+    public PersonPhoneAlertDTO getPhones(String stationNumber){
+        List<String> listAddresses = dataRepository.getFireStations()
                 .stream()
-                .filter(person -> person.getFirstName().equalsIgnoreCase(firstName) && person.getLastName().equalsIgnoreCase(lastName))
-                .findFirst()
-                .map(personMapper::personToPersonDto)
-                .orElse(null);
+                .filter(fireStation -> fireStation.getStation().equals(stationNumber))
+                .map(FireStation::getAddress)
+                .toList();
+
+        Set<String> listPhones = dataRepository.getPersons()
+                .stream()
+                .filter(person -> listAddresses.contains(person.getAddress()))
+                .map(Person::getPhone)
+                .collect(Collectors.toSet());
+
+        return new PersonPhoneAlertDTO(listPhones);
     }
 
     @Override
