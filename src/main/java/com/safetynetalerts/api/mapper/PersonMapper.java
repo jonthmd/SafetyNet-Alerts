@@ -9,4 +9,5 @@ public interface PersonMapper {
 
     PersonDTO personToPersonDto(Person person);
     Person personDtoToPerson(PersonDTO personDTO);
+
 }
