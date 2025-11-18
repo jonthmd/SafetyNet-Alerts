@@ -9,11 +9,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FireStationStatsDTO {
+public class PersonChildAlertDTO {
 
-    private List<FireStationPersonDTO> listPersons;
-
-    private int adults;
-    private int children;
+    private List<PersonChildDTO> childDTOList;
+    private List<PersonFamilyDTO> familyDTOList;
 
 }

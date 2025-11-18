@@ -1,7 +1,10 @@
 package com.safetynetalerts.api.controller;
 
+import com.safetynetalerts.api.dto.PersonChildAlertDTO;
+import com.safetynetalerts.api.dto.PersonChildDTO;
 import com.safetynetalerts.api.dto.PersonDTO;
 import com.safetynetalerts.api.service.PersonService;
+import com.safetynetalerts.api.service.implementation.PersonServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +20,7 @@ public class PersonController {
 
     private final PersonService personService;
 
-    public PersonController(PersonService personService) {
+    public PersonController(PersonService personService, PersonServiceImpl personServiceimpl) {
         this.personService = personService;
     }
 
@@ -31,6 +34,12 @@ public class PersonController {
     @Operation(summary = "Get a person.", description = "Returns a person by entering firstname and lastname.")
     public PersonDTO getPerson(@PathVariable String firstName, @PathVariable String lastName){
         return personService.getByFirstNameAndLastName(firstName, lastName);
+    }
+
+    @GetMapping("/childAlert")
+    @Operation(summary = "Get children.", description = "Returns the complete list of children covered by address.")
+    public PersonChildAlertDTO getChildren(@RequestParam String address){
+        return personService.getChildByAddress(address);
     }
 
     @PostMapping

@@ -6,7 +6,6 @@ import com.safetynetalerts.api.mapper.FireStationPersonMapper;
 import com.safetynetalerts.api.mapper.MedicalRecordMapper;
 import com.safetynetalerts.api.mapper.PersonMapper;
 import com.safetynetalerts.api.model.FireStation;
-import com.safetynetalerts.api.model.MedicalRecord;
 import com.safetynetalerts.api.repository.DataRepository;
 import com.safetynetalerts.api.service.FireStationService;
 import com.safetynetalerts.api.utils.DateFormatterUtil;
