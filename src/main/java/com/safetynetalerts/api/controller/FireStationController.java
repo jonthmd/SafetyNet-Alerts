@@ -1,5 +1,6 @@
 package com.safetynetalerts.api.controller;
 
+import com.safetynetalerts.api.dto.FireDTO;
 import com.safetynetalerts.api.dto.FireStationDTO;
 import com.safetynetalerts.api.dto.FireStationStatsDTO;
 import com.safetynetalerts.api.service.FireStationService;
@@ -34,11 +35,18 @@ public class FireStationController {
         return fireStationService.getByAddress(address);
     }
 
+    @GetMapping("/fire")
+    @Operation(summary = "Get medical records person covered by station number.", description = "Returns medical records person covered by station number.")
+    public List<FireDTO> getRecordsPersons(@RequestParam String address){
+        return fireStationService.getRecordsPersonByAddress(address);
+    }
+
     @GetMapping(params = "stationNumber")
     @Operation(summary = "Get persons covered by station number.", description = "Returns persons covered by station number.")
     public FireStationStatsDTO getPersonsByStationNumber(@RequestParam String stationNumber){
         return fireStationService.getByStationNumber(stationNumber);
     }
+
 
     @PostMapping
     @Operation(summary = "Add a fire station.", description = "Adding a station by using station and address.")

@@ -1,14 +1,10 @@
 package com.safetynetalerts.api.service.implementation;
 
 import com.safetynetalerts.api.dto.*;
-import com.safetynetalerts.api.mapper.FireStationMapper;
-import com.safetynetalerts.api.mapper.FireStationPersonMapper;
-import com.safetynetalerts.api.mapper.MedicalRecordMapper;
-import com.safetynetalerts.api.mapper.PersonMapper;
+import com.safetynetalerts.api.mapper.*;
 import com.safetynetalerts.api.model.FireStation;
 import com.safetynetalerts.api.repository.DataRepository;
 import com.safetynetalerts.api.service.FireStationService;
-import com.safetynetalerts.api.utils.DateFormatterUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +20,14 @@ public class FireStationServiceImpl implements FireStationService {
     private final FireStationMapper fireStationMapper;
     private final MedicalRecordMapper medicalRecordMapper;
     private final FireStationPersonMapper fireStationPersonMapper;
+    private final PersonMapper personMapper;
 
-    public FireStationServiceImpl(DataRepository dataRepository, FireStationMapper fireStationMapper, PersonMapper personMapper, MedicalRecordMapper medicalRecordMapper, FireStationPersonMapper fireStationPersonMapper, DateFormatterUtil dateFormatterUtil) {
+    public FireStationServiceImpl(DataRepository dataRepository, FireStationMapper fireStationMapper, PersonMapper personMapper, MedicalRecordMapper medicalRecordMapper, FireStationPersonMapper fireStationPersonMapper) {
         this.dataRepository = dataRepository;
         this.fireStationMapper = fireStationMapper;
         this.medicalRecordMapper = medicalRecordMapper;
         this.fireStationPersonMapper = fireStationPersonMapper;
+        this.personMapper = personMapper;
     }
 
 
@@ -154,6 +152,56 @@ public class FireStationServiceImpl implements FireStationService {
         fireStationStatsDTO.setAdults(adults);
         fireStationStatsDTO.setChildren(children);
         return fireStationStatsDTO;
+    }
+
+    @Override
+    public List<FireDTO> getRecordsPersonByAddress(String address){
+        //1.Récupérer station number via address
+        List<String> stationsList = dataRepository.getFireStations()
+                .stream()
+                .filter(fireStation -> fireStation.getAddress().equalsIgnoreCase(address))
+                .map(FireStation::getStation)
+                .toList();
+
+        //2. Récupérer personnes
+        List<PersonDTO> personsList = dataRepository.getPersons()
+                .stream()
+                .map(personMapper::personToPersonDto)
+                .toList();
+
+        //3. age avec medical records
+        Map<String, MedicalRecordDTO> medicalRecordDTOMap = dataRepository.getMedicalRecords()
+                .stream()
+                .map(medicalRecordMapper::medicalRecordToMedicalRecordDto)
+                .collect(Collectors.toMap(
+                        medicalRecordDTO -> (medicalRecordDTO.getFirstName() +" "+medicalRecordDTO.getLastName()),
+                        medicalRecordDTO -> medicalRecordDTO
+                ));
+
+        for(PersonDTO person : personsList){
+            String key = (person.getFirstName() +" "+person.getLastName());
+            MedicalRecordDTO medicalRecordDTO = medicalRecordDTOMap.get(key);
+
+            if (medicalRecordDTO != null) {
+                int age = calculateAge(medicalRecordDTO.getBirthdate());
+
+
+                //4. créer dto avec valeur attendu
+                FirePersonDTO firePersonDTO = new FirePersonDTO();
+                firePersonDTO.setLastName(person.getLastName());
+                firePersonDTO.setPhone(person.getPhone());
+                firePersonDTO.setAge(age);
+                firePersonDTO.setMedications(medicalRecordDTO.getMedications());
+                firePersonDTO.setAllergies(medicalRecordDTO.getAllergies());
+            }
+        }
+        //5. retourner dans un autre dto
+
+        FireDTO fireDTO = new FireDTO();
+        fireDTO.setStation(stationsList);
+        fireDTO.setPersons(personsList);
+
+        return List.of(fireDTO);
     }
 
     @Override

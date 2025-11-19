@@ -24,7 +24,7 @@ public class PersonServiceImpl implements PersonService {
     private final PersonChildMapper personChildMapper;
     private final MedicalRecordMapper medicalRecordMapper;
 
-    public PersonServiceImpl(DataRepository dataRepository, PersonMapper personMapper, PersonChildMapper personChildMapper, MedicalRecordMapper medicalRecordMapper, FireStationPersonMapper fireStationPersonMapper) {
+    public PersonServiceImpl(DataRepository dataRepository, PersonMapper personMapper, PersonChildMapper personChildMapper, MedicalRecordMapper medicalRecordMapper) {
         this.dataRepository = dataRepository;
         this.personMapper = personMapper;
         this.personChildMapper = personChildMapper;
