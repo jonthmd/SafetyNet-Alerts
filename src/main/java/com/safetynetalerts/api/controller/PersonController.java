@@ -4,7 +4,6 @@ import com.safetynetalerts.api.dto.PersonChildAlertDTO;
 import com.safetynetalerts.api.dto.PersonDTO;
 import com.safetynetalerts.api.dto.PersonPhoneAlertDTO;
 import com.safetynetalerts.api.service.PersonService;
-import com.safetynetalerts.api.service.implementation.PersonServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,7 @@ public class PersonController {
 
     private final PersonService personService;
 
-    public PersonController(PersonService personService, PersonServiceImpl personServiceimpl) {
+    public PersonController(PersonService personService) {
         this.personService = personService;
     }
 

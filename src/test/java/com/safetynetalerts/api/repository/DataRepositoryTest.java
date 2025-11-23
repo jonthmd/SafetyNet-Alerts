@@ -1,8 +1,7 @@
-package com.safetynetalerts.api;
+package com.safetynetalerts.api.repository;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.safetynetalerts.api.repository.DataRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,7 +36,7 @@ class DataRepositoryTest {
 
 
     @Test
-    public void testInit() throws IOException {
+    void testInit() throws IOException {
 
         //GIVEN
         ObjectMapper objectMapper = new ObjectMapper();
@@ -54,7 +53,7 @@ class DataRepositoryTest {
     }
 
     @Test
-    public void testInitNodeNull() throws IOException {
+    void testInitNodeNull() throws IOException {
 
         //GIVEN
         ObjectMapper objectMapper = new ObjectMapper();
@@ -71,15 +70,14 @@ class DataRepositoryTest {
     }
 
     @Test
-    public void testInitExceptionHandled() throws IOException {
+    void testInitExceptionHandled() throws IOException {
 
         //GIVEN
-        when(mapper.readTree(any(File.class))).thenThrow(new IOException("Error."));
+        when(mapper.readTree(any(File.class))).thenReturn(null);
 
         //WHEN + THEN
         assertThatThrownBy(() -> dataRepository.init())
-                .isInstanceOf(IOException.class)
-                .hasMessageContaining("Error.");
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("issue when parsing a rootNode");
     }
-
 }

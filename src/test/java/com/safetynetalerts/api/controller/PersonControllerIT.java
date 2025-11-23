@@ -1,4 +1,4 @@
-package com.safetynetalerts.api;
+package com.safetynetalerts.api.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +20,31 @@ public class PersonControllerIT {
 
 
     @Test
-    public void testGetPersons() throws Exception {
+    void testGetAllPersons() throws Exception {
         mockMvc.perform(get("/person/all"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testGetAPerson() throws Exception {
+    void testGetPerson() throws Exception {
         mockMvc.perform(get("/person/{firstName}/{lastName}", "Jon", "TH"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testAddPerson() throws Exception {
+    void testGetChildren() throws Exception {
+        mockMvc.perform(get("/person/childAlert").param("address", "1509 Culver St"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testGetPhones() throws Exception {
+        mockMvc.perform(get("/person/phoneAlert").param("fireStation","3"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testAddPerson() throws Exception {
 
         String json = """
             {
@@ -47,7 +59,7 @@ public class PersonControllerIT {
     }
 
     @Test
-    public void testUpdatePerson() throws Exception {
+    void testUpdatePerson() throws Exception {
 
         String json = """
             {
@@ -56,13 +68,13 @@ public class PersonControllerIT {
             """;
 
         mockMvc.perform(put("/person/{firstName}/{lastName}", "Jon", "TH")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void testDeletePerson() throws Exception {
+    void testDeletePerson() throws Exception {
 
         String json = """
             {
@@ -71,9 +83,8 @@ public class PersonControllerIT {
             """;
 
         mockMvc.perform(delete("/person/{firstName}/{lastName}", "Jon", "TH")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json))
                 .andExpect(status().isOk());
     }
-
 }

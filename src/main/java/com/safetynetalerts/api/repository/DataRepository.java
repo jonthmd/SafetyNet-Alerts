@@ -3,6 +3,7 @@ package com.safetynetalerts.api.repository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.safetynetalerts.api.exception.ApplicationException;
 import com.safetynetalerts.api.model.FireStation;
 import com.safetynetalerts.api.model.MedicalRecord;
 import com.safetynetalerts.api.model.Person;
@@ -46,7 +47,7 @@ public class DataRepository {
         medicalRecords =  getObjectFromJsonNode("medicalrecords", MedicalRecord.class);
     }
 
-    private <T> List<T> getObjectFromJsonNode(String nodeName, Class<T> tClass) {
+    private <T> List<T> getObjectFromJsonNode(String nodeName, Class<T> tClass) throws IOException {
 
         ObjectMapper privateMapper = new ObjectMapper();
 
@@ -60,8 +61,8 @@ public class DataRepository {
             CollectionType collectionType = privateMapper.getTypeFactory().constructCollectionType(List.class, tClass);
 
             return privateMapper.readValue(node.traverse(), collectionType);
-        } catch (IOException e) {
-            return Collections.emptyList();
+        } catch (NullPointerException | IOException e) {
+            throw new ApplicationException("issue when parsing a rootNode");
         }
     }
 

@@ -1,10 +1,9 @@
-package com.safetynetalerts.api;
+package com.safetynetalerts.api.service.implementation;
 
 import com.safetynetalerts.api.dto.PersonDTO;
 import com.safetynetalerts.api.mapper.PersonMapper;
 import com.safetynetalerts.api.model.Person;
 import com.safetynetalerts.api.repository.DataRepository;
-import com.safetynetalerts.api.service.implementation.PersonServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +31,7 @@ public class PersonServiceTest {
 
 
     @Test
-    public void getPersonsTest(){
+    void getPersonsTest(){
 
         //GIVEN
         Person person = new Person();
@@ -52,7 +51,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void getAPersonTest(){
+    void getAPersonTest(){
 
         //GIVEN
         Person person = new Person("Jon", "TH", "", "", "", "", "");
@@ -70,7 +69,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void addPersonTest(){
+    void addPersonTest(){
 
         //GIVEN
         PersonDTO personDTO = new PersonDTO();
@@ -88,7 +87,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void updatePersonTest(){
+    void updatePersonTest(){
 
         //GIVEN
         List<Person> persons = new ArrayList<>();
@@ -109,7 +108,7 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void deletePersonTest(){
+    void deletePersonTest(){
 
         //GIVEN
         List<Person> persons = new ArrayList<>();
@@ -122,6 +121,5 @@ public class PersonServiceTest {
 
         //THEN
         assertThat(persons).doesNotContain(person);
-
     }
 }
