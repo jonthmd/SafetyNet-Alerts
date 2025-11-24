@@ -11,7 +11,7 @@ public interface FireStationService {
     List<FireStationDTO> getAll();
     FireStationDTO getByAddress(String address);
     FireStationStatsDTO getByStationNumber(String stationNumber);
-    List<FireDTO> getRecordsPersonByAddress(String address);
+    FireDTO getRecordsPersonByAddress(String address);
     FireStationDTO create(FireStationDTO fireStationDTO);
     FireStationDTO update(String address, FireStationDTO fireStationDTO);
     void delete(String address);

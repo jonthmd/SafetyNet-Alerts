@@ -8,4 +8,5 @@ import org.mapstruct.Mapper;
 public interface FireStationPersonMapper {
 
     FireStationPersonDTO fireStationPersonToFireStationPersonDto (Person person);
+
 }

@@ -7,6 +7,7 @@ import com.safetynetalerts.api.repository.DataRepository;
 import com.safetynetalerts.api.service.FireStationService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,22 +52,18 @@ public class FireStationServiceImpl implements FireStationService {
 
     @Override
     public FireStationStatsDTO getByStationNumber(String stationNumber) {
-        //1 chercher dans firestation, adresses avec station = stationNumber
         List<String> listAddresses = dataRepository.getFireStations()
                 .stream()
                 .filter(fireStation -> fireStation.getStation().equals(stationNumber))
                 .map(FireStation::getAddress)
                 .toList();
 
-        //2 récupérer les personnes liées aux adresses trouvées (liste)
         List<FireStationPersonDTO> listPersons = dataRepository.getPersons()
                 .stream()
                 .filter(person -> listAddresses.contains(person.getAddress()))
                 .map(fireStationPersonMapper::fireStationPersonToFireStationPersonDto)
                 .toList();
 
-
-        //3 incrémenter liste mineur ou liste majeur selon age de la personne. Aller dans medicalRecord pour récupérer le birthdate des personnes de la liste.
         int adults = 0;
         int children = 0;
 
@@ -77,7 +74,6 @@ public class FireStationServiceImpl implements FireStationService {
                         medicalRecordDTO -> (medicalRecordDTO.getFirstName() +" "+medicalRecordDTO.getLastName()),
                         medicalRecordDTO -> medicalRecordDTO
                 ));
-
 
         for(FireStationPersonDTO person : listPersons){
             String key = (person.getFirstName() +" "+person.getLastName());
@@ -94,82 +90,27 @@ public class FireStationServiceImpl implements FireStationService {
             }
         }
 
-
-//        // Mis à jour. Voir collection map pour éviter les deux boucles.
-//        int adults = 0;
-//        int children = 0;
-//
-//        List<MedicalRecord> medicalRecords = dataRepository.getMedicalRecords();
-//
-//        for (FireStationPersonDTO person : listPersons) {
-//
-//            MedicalRecordDTO medicalRecordPerson = null;
-//            for (MedicalRecord medicalRecord : medicalRecords) {
-//                MedicalRecordDTO dto = medicalRecordMapper.medicalRecordToMedicalRecordDto(medicalRecord);
-//
-//                if (dto.getFirstName().equalsIgnoreCase(person.getFirstName()) &&
-//                        dto.getLastName().equalsIgnoreCase(person.getLastName())) {
-//                    medicalRecordPerson = dto;
-//                    break;
-//                }
-//            }
-//
-//            if (medicalRecordPerson != null) {
-//                int age = calculateAge(medicalRecordPerson.getBirthdate());
-//
-//                if (age <= 18) {
-//                    children++;
-//                } else {
-//                    adults++;
-//                }
-//            }
-//        }
-
-        //original version
-//        int adults = 0;
-//        int children = 0;
-//
-//        for(PersonDTO person : listPersons){
-//            MedicalRecordDTO medicalRecordPerson = dataRepository.getMedicalRecords()
-//                    .stream()
-//                    .map(medicalRecordMapper::medicalRecordToMedicalRecordDto)
-//                    .filter(medicalRecordDTO -> medicalRecordDTO.getFirstName().equalsIgnoreCase(person.getFirstName()) && medicalRecordDTO.getLastName().equalsIgnoreCase(person.getLastName()))
-//                    .findFirst()
-//                    .orElse(null);
-//
-//            if (medicalRecordPerson != null){
-//                int age = calculateAge(medicalRecordPerson.getBirthdate());
-//
-//                if(age <= 18){
-//                    children ++;
-//                }else {
-//                    adults ++;
-//                }
-//            }
-
         FireStationStatsDTO fireStationStatsDTO = new FireStationStatsDTO();
         fireStationStatsDTO.setListPersons(listPersons);
-        fireStationStatsDTO.setAdults(adults);
         fireStationStatsDTO.setChildren(children);
+        fireStationStatsDTO.setAdults(adults);
         return fireStationStatsDTO;
     }
 
     @Override
-    public List<FireDTO> getRecordsPersonByAddress(String address){
-        //1.Récupérer station number via address
+    public FireDTO getRecordsPersonByAddress(String address){
         List<String> stationsList = dataRepository.getFireStations()
                 .stream()
                 .filter(fireStation -> fireStation.getAddress().equalsIgnoreCase(address))
                 .map(FireStation::getStation)
                 .toList();
 
-        //2. Récupérer personnes
         List<PersonDTO> personsList = dataRepository.getPersons()
                 .stream()
+                .filter(person -> person.getAddress().equalsIgnoreCase(address))
                 .map(personMapper::personToPersonDto)
                 .toList();
 
-        //3. age avec medical records
         Map<String, MedicalRecordDTO> medicalRecordDTOMap = dataRepository.getMedicalRecords()
                 .stream()
                 .map(medicalRecordMapper::medicalRecordToMedicalRecordDto)
@@ -178,6 +119,8 @@ public class FireStationServiceImpl implements FireStationService {
                         medicalRecordDTO -> medicalRecordDTO
                 ));
 
+        List<FirePersonDTO> firePersonDTOList = new ArrayList<>();
+
         for(PersonDTO person : personsList){
             String key = (person.getFirstName() +" "+person.getLastName());
             MedicalRecordDTO medicalRecordDTO = medicalRecordDTOMap.get(key);
@@ -185,23 +128,21 @@ public class FireStationServiceImpl implements FireStationService {
             if (medicalRecordDTO != null) {
                 int age = calculateAge(medicalRecordDTO.getBirthdate());
 
-
-                //4. créer dto avec valeur attendu
                 FirePersonDTO firePersonDTO = new FirePersonDTO();
                 firePersonDTO.setLastName(person.getLastName());
                 firePersonDTO.setPhone(person.getPhone());
                 firePersonDTO.setAge(age);
                 firePersonDTO.setMedications(medicalRecordDTO.getMedications());
                 firePersonDTO.setAllergies(medicalRecordDTO.getAllergies());
+                firePersonDTOList.add(firePersonDTO);
             }
         }
-        //5. retourner dans un autre dto
 
         FireDTO fireDTO = new FireDTO();
         fireDTO.setStation(stationsList);
-        fireDTO.setPersons(personsList);
+        fireDTO.setPersons(firePersonDTOList);
 
-        return List.of(fireDTO);
+        return fireDTO;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class FireStationController {
 
     @GetMapping("/fire")
     @Operation(summary = "Get medical records person covered by station number.", description = "Returns medical records person covered by station number.")
-    public List<FireDTO> getRecordsPersons(@RequestParam String address){
+    public FireDTO getRecordsPersons(@RequestParam String address){
         return fireStationService.getRecordsPersonByAddress(address);
     }
 
@@ -46,7 +46,6 @@ public class FireStationController {
     public FireStationStatsDTO getPersonsByStationNumber(@RequestParam String stationNumber){
         return fireStationService.getByStationNumber(stationNumber);
     }
-
 
     @PostMapping
     @Operation(summary = "Add a fire station.", description = "Adding a station by using station and address.")
@@ -65,5 +64,4 @@ public class FireStationController {
     public void deleteFireStation(@PathVariable String address){
         fireStationService.delete(address);
     }
-
 }

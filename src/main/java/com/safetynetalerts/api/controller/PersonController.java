@@ -64,5 +64,4 @@ public class PersonController {
     public void deletePerson(@PathVariable String firstName, @PathVariable String lastName){
         personService.delete(firstName, lastName);
     }
-
 }

@@ -111,15 +111,17 @@ public class PersonServiceTest {
     void deletePersonTest(){
 
         //GIVEN
-        List<Person> persons = new ArrayList<>();
+        List<Person> personList = new ArrayList<>();
         Person person = new Person("Jon", "TH", "address", "city", "zip", "phone", "email");
-        persons.add(person);
-        when(dataRepository.getPersons()).thenReturn(persons);
+        personList.add(person);
+        when(dataRepository.getPersons()).thenReturn(personList);
 
         //WHEN
         classUnderTest.delete("Jon", "TH");
 
         //THEN
-        assertThat(persons).doesNotContain(person);
+        verify(dataRepository).getPersons();
+        assertThat(personList).doesNotContain(person);
+        assertThat(personList).hasSize(0);
     }
 }

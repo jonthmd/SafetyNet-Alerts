@@ -12,6 +12,6 @@ import java.util.List;
 public class FireDTO {
 
     private List<String> station;
-    private List<PersonDTO> persons;
+    private List<FirePersonDTO> persons;
 
 }
