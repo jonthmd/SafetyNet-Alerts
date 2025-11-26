@@ -44,8 +44,19 @@ public class PersonControllerIT {
     }
 
     @Test
-    void testAddPerson() throws Exception {
+    void testGetInfoLastName() throws Exception {
+        mockMvc.perform(get("/person").param("InfoLastName", "Boyd"))
+                .andExpect(status().isOk());
+    }
 
+    @Test
+    void testGetEmails() throws Exception {
+        mockMvc.perform(get("/person/communityEmail").param("city", "Culver"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void testAddPerson() throws Exception {
         String json = """
             {
             "firstName":"Jon","lastName":"TH","address":"2r","city":"cm","zip":"92","phone":"841-874-6512","email":"jon@email.com"
@@ -60,7 +71,6 @@ public class PersonControllerIT {
 
     @Test
     void testUpdatePerson() throws Exception {
-
         String json = """
             {
             "firstName":"Jon","lastName":"TH","address":"2r","city":"cm","zip":"92","phone":"841-874-6512","email":"jon@email.com"
@@ -75,7 +85,6 @@ public class PersonControllerIT {
 
     @Test
     void testDeletePerson() throws Exception {
-
         String json = """
             {
             "firstName":"Jon","lastName":"TH","address":"2r","city":"cm","zip":"92","phone":"841-874-6512","email":"jon@email.com"

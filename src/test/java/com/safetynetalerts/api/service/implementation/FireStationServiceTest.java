@@ -208,6 +208,56 @@ class FireStationServiceTest {
     }
 
     @Test
+    void getFireStationFloodHomes(){
+        //GIVEN
+        FireStation fireStation = new FireStation("1509 Culver St","3");
+        List<FireStation> fireStationList = List.of(fireStation);
+        List<String> addressesList = List.of("1509 Culver St");
+        when(dataRepository.getFireStations()).thenReturn(fireStationList);
+
+        Person person = new Person("Jon","TH","1509 Culver St","","","","");
+        List<Person> personList = List.of(person);
+        PersonDTO personDTO = new PersonDTO("Jon","TH","1509 Culver St","","","","");
+        when(dataRepository.getPersons()).thenReturn(personList);
+        when(personMapper.personToPersonDto(person)).thenReturn(personDTO);
+
+        MedicalRecord medicalRecord = new MedicalRecord();
+        List<MedicalRecord> medicalRecordList = List.of(medicalRecord);
+        MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO();
+        medicalRecordDTO.setFirstName("Jon");
+        medicalRecordDTO.setLastName("TH");
+        medicalRecordDTO.setBirthdate("12/28/2022");
+        when(dataRepository.getMedicalRecords()).thenReturn(medicalRecordList);
+        when(medicalRecordMapper.medicalRecordToMedicalRecordDto(medicalRecord)).thenReturn(medicalRecordDTO);
+
+        FirePersonDTO firePersonDTO = new FirePersonDTO();
+        firePersonDTO.setLastName("TH");
+        firePersonDTO.setPhone("");
+        firePersonDTO.setAge(2);
+        firePersonDTO.setMedications(medicalRecordDTO.getMedications());
+        firePersonDTO.setAllergies(medicalRecordDTO.getAllergies());
+
+        List<FirePersonDTO> firePersonDTOList = List.of(firePersonDTO);
+
+        FireStationFloodDTO fireStationFloodDTO = new FireStationFloodDTO();
+        fireStationFloodDTO.setAddresses(addressesList);
+        fireStationFloodDTO.setPersons(firePersonDTOList);
+
+        //WHEN
+        List<String> stationNumbers = List.of("3");
+        FireStationFloodDTO result = classUnderTest.getHomes(stationNumbers);
+
+        //THEN
+        verify(dataRepository).getFireStations();
+        verify(dataRepository).getPersons();
+        verify(dataRepository).getMedicalRecords();
+        verify(personMapper).personToPersonDto(person);
+        verify(medicalRecordMapper).medicalRecordToMedicalRecordDto(medicalRecord);
+        assertThat(result.getAddresses()).isEqualTo(List.of("1509 Culver St"));
+        assertThat(result.getPersons()).hasSize(1);
+    }
+
+    @Test
     void addFireStationTest(){
         //GIVEN
         FireStation fireStation = new FireStation();

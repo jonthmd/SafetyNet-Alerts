@@ -112,6 +112,59 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public PersonInfoLastNameDTO getInfoLastName(String lastName) {
+        List<PersonDTO> personDTOList = dataRepository.getPersons()
+                .stream()
+                .filter(person -> person.getLastName().equalsIgnoreCase(lastName))
+                .map(personMapper::personToPersonDto)
+                .toList();
+
+        Map<String, MedicalRecordDTO> medicalRecordDTOMap = dataRepository.getMedicalRecords()
+                .stream()
+                .map(medicalRecordMapper::medicalRecordToMedicalRecordDto)
+                .collect(Collectors.toMap(
+                        medicalRecordDTO -> (medicalRecordDTO.getFirstName() +" "+medicalRecordDTO.getLastName()),
+                        medicalRecordDTO -> medicalRecordDTO
+                ));
+
+        List<PersonInfoDTO> personInfoDTOList = new ArrayList<>();
+
+        for(PersonDTO person : personDTOList){
+            String key = (person.getFirstName() +" "+person.getLastName());
+            MedicalRecordDTO medicalRecordDTO = medicalRecordDTOMap.get(key);
+
+            if (medicalRecordDTO != null) {
+                int age = calculateAge(medicalRecordDTO.getBirthdate());
+
+                PersonInfoDTO personInfoDTO = new PersonInfoDTO();
+                personInfoDTO.setLastName(person.getLastName());
+                personInfoDTO.setAddress(person.getAddress());
+                personInfoDTO.setAge(age);
+                personInfoDTO.setEmail(person.getEmail());
+                personInfoDTO.setMedications(medicalRecordDTO.getMedications());
+                personInfoDTO.setAllergies(medicalRecordDTO.getAllergies());
+                personInfoDTOList.add(personInfoDTO);
+            }
+        }
+
+        PersonInfoLastNameDTO personInfoLastNameDTO = new PersonInfoLastNameDTO();
+        personInfoLastNameDTO.setPersons(personInfoDTOList);
+
+        return personInfoLastNameDTO;
+    }
+
+    @Override
+    public PersonEmailDTO getEmails(String city) {
+        Set<String> emailsList = dataRepository.getPersons()
+                .stream()
+                .filter(person -> person.getCity().equalsIgnoreCase(city))
+                .map(Person::getEmail)
+                .collect(Collectors.toSet());
+
+        return new PersonEmailDTO(emailsList);
+    }
+
+    @Override
     public PersonDTO create(PersonDTO personDTO) {
         Person person = personMapper.personDtoToPerson(personDTO);
         dataRepository.getPersons().add(person);

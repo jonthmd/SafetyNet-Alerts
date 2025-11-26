@@ -36,6 +36,12 @@ class FireStationControllerIT {
     }
 
     @Test
+    void testGetFlood() throws Exception {
+        mockMvc.perform(get("/fireStation/flood/stations").param("stationNumbers", "3"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void testGetPersonsByStationNumber() throws Exception {
         mockMvc.perform(get("/fireStation").param("stationNumber", "3"))
                 .andExpect(status().isOk());

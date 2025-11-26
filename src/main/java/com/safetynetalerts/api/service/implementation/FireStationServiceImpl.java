@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 
 import static com.safetynetalerts.api.utils.DateFormatterUtil.calculateAge;
 
+/**
+ *
+ */
 @Service
 public class FireStationServiceImpl implements FireStationService {
 
@@ -143,6 +146,53 @@ public class FireStationServiceImpl implements FireStationService {
         fireDTO.setPersons(firePersonDTOList);
 
         return fireDTO;
+    }
+
+    @Override
+    public FireStationFloodDTO getHomes(List<String> stationNumbers) {
+        List<String> listAddresses = dataRepository.getFireStations()
+                .stream()
+                .filter(fireStation -> stationNumbers.contains(fireStation.getStation()))
+                .map(FireStation::getAddress)
+                .toList();
+
+        List<PersonDTO> personsList = dataRepository.getPersons()
+                .stream()
+                .map(personMapper::personToPersonDto)
+                .toList();
+
+        Map<String, MedicalRecordDTO> medicalRecordDTOMap = dataRepository.getMedicalRecords()
+                .stream()
+                .map(medicalRecordMapper::medicalRecordToMedicalRecordDto)
+                .collect(Collectors.toMap(
+                        medicalRecordDTO -> (medicalRecordDTO.getFirstName() +" "+medicalRecordDTO.getLastName()),
+                        medicalRecordDTO -> medicalRecordDTO
+                ));
+
+        List<FirePersonDTO> firePersonDTOList = new ArrayList<>();
+
+        for(PersonDTO person : personsList){
+            String key = (person.getFirstName() +" "+person.getLastName());
+            MedicalRecordDTO medicalRecordDTO = medicalRecordDTOMap.get(key);
+
+            if (medicalRecordDTO != null) {
+                int age = calculateAge(medicalRecordDTO.getBirthdate());
+
+                FirePersonDTO firePersonDTO = new FirePersonDTO();
+                firePersonDTO.setLastName(person.getLastName());
+                firePersonDTO.setPhone(person.getPhone());
+                firePersonDTO.setAge(age);
+                firePersonDTO.setMedications(medicalRecordDTO.getMedications());
+                firePersonDTO.setAllergies(medicalRecordDTO.getAllergies());
+                firePersonDTOList.add(firePersonDTO);
+            }
+        }
+
+        FireStationFloodDTO fireStationFloodDTO = new FireStationFloodDTO();
+        fireStationFloodDTO.setAddresses(listAddresses);
+        fireStationFloodDTO.setPersons(firePersonDTOList);
+
+        return fireStationFloodDTO;
     }
 
     @Override

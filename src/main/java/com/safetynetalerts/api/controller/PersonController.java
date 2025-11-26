@@ -1,8 +1,6 @@
 package com.safetynetalerts.api.controller;
 
-import com.safetynetalerts.api.dto.PersonChildAlertDTO;
-import com.safetynetalerts.api.dto.PersonDTO;
-import com.safetynetalerts.api.dto.PersonPhoneAlertDTO;
+import com.safetynetalerts.api.dto.*;
 import com.safetynetalerts.api.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,6 +43,18 @@ public class PersonController {
     @Operation(summary = "Get phones.", description = "Returns the complete list of phones covered by fire station.")
     public PersonPhoneAlertDTO getPhonesByFireStation(@RequestParam String fireStation){
         return personService.getPhones(fireStation);
+    }
+
+    @GetMapping
+    @Operation(summary = "Get persons infos.", description = "Returns info by entering lastName.")
+    public PersonInfoLastNameDTO getPersonInfo(@RequestParam String InfoLastName){
+        return personService.getInfoLastName(InfoLastName);
+    }
+
+    @GetMapping("/communityEmail")
+    @Operation(summary = "Get emails.", description = "Returns persons emails by entering city.")
+    public PersonEmailDTO getPersonsEmail(@RequestParam String city){
+        return personService.getEmails(city);
     }
 
     @PostMapping

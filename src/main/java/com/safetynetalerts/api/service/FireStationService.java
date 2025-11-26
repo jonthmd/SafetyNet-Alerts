@@ -1,8 +1,6 @@
 package com.safetynetalerts.api.service;
 
-import com.safetynetalerts.api.dto.FireDTO;
-import com.safetynetalerts.api.dto.FireStationDTO;
-import com.safetynetalerts.api.dto.FireStationStatsDTO;
+import com.safetynetalerts.api.dto.*;
 
 import java.util.List;
 
@@ -12,6 +10,7 @@ public interface FireStationService {
     FireStationDTO getByAddress(String address);
     FireStationStatsDTO getByStationNumber(String stationNumber);
     FireDTO getRecordsPersonByAddress(String address);
+    FireStationFloodDTO getHomes(List<String> stationNumber);
     FireStationDTO create(FireStationDTO fireStationDTO);
     FireStationDTO update(String address, FireStationDTO fireStationDTO);
     void delete(String address);

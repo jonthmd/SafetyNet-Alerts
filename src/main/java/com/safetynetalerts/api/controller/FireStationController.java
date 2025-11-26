@@ -2,6 +2,7 @@ package com.safetynetalerts.api.controller;
 
 import com.safetynetalerts.api.dto.FireDTO;
 import com.safetynetalerts.api.dto.FireStationDTO;
+import com.safetynetalerts.api.dto.FireStationFloodDTO;
 import com.safetynetalerts.api.dto.FireStationStatsDTO;
 import com.safetynetalerts.api.service.FireStationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,6 +40,12 @@ public class FireStationController {
     @Operation(summary = "Get medical records person covered by station number.", description = "Returns medical records person covered by station number.")
     public FireDTO getRecordsPersons(@RequestParam String address){
         return fireStationService.getRecordsPersonByAddress(address);
+    }
+
+    @GetMapping("/flood/stations")
+    @Operation(summary = "Get medical records person grouped by address.", description = "Returns medical records person grouped by address.")
+    public FireStationFloodDTO getFlood(@RequestParam List<String> stationNumbers){
+        return fireStationService.getHomes(stationNumbers);
     }
 
     @GetMapping(params = "stationNumber")
