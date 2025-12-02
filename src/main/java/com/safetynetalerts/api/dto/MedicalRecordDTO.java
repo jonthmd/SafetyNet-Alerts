@@ -1,14 +1,14 @@
 package com.safetynetalerts.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.safetynetalerts.api.model.Person;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * DTO used to represent the medical record model.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

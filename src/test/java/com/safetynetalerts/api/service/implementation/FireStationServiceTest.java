@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -82,6 +83,26 @@ class FireStationServiceTest {
         verify(dataRepository).getFireStations();
         verify(fireStationMapper).fireStationToFireStationDto(fireStation);
         assertThat(result).isEqualTo(fireStationDTO);
+    }
+
+    @Test
+    void getPhonesTest(){
+        //GIVEN
+        FireStation fireStation = new FireStation("1509 Culver St", "3");
+        List<FireStation> fireStationList = List.of(fireStation);
+        when(dataRepository.getFireStations()).thenReturn(fireStationList);
+
+        Person person = new Person("Jon", "TH", "1509 Culver St", "", "", "11", "");
+        List<Person> personList = List.of(person);
+        when(dataRepository.getPersons()).thenReturn(personList);
+
+        //WHEN
+        FireStationPhoneAlertDTO result = classUnderTest.getPhones("3");
+
+        //THEN
+        verify(dataRepository).getFireStations();
+        verify(dataRepository).getPersons();
+        assertThat(result.getPhone()).isEqualTo(Set.of("11"));
     }
 
     @Test

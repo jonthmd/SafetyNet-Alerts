@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * Model representing a medical record saved in the JSON.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

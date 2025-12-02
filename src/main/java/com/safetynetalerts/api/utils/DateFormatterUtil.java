@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Util used to calculate age of persons from their birthdate in String format.
+ */
 @Component
 public class DateFormatterUtil {
 

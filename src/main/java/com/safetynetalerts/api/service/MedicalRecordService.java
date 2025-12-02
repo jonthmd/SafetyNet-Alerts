@@ -4,6 +4,9 @@ import com.safetynetalerts.api.dto.MedicalRecordDTO;
 
 import java.util.List;
 
+/**
+ * Service interface managing operations related to medical record.
+ */
 public interface MedicalRecordService {
 
     List<MedicalRecordDTO> getAll();

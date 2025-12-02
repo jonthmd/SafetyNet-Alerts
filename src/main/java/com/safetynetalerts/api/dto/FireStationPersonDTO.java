@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO used to represent a person with first name, last name,
+ * address and phone number.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

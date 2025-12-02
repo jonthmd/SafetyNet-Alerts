@@ -4,12 +4,14 @@ import com.safetynetalerts.api.dto.*;
 
 import java.util.List;
 
+/**
+ * Service interface managing operations related to person.
+ */
 public interface PersonService {
 
     List<PersonDTO> getAll();
     PersonDTO getByFirstNameAndLastName(String firstName, String lastName);
     PersonChildAlertDTO getChildren(String address);
-    PersonPhoneAlertDTO getPhones(String stationNumber);
     PersonInfoLastNameDTO getInfoLastName(String lastName);
     PersonEmailDTO getEmails(String city);
     PersonDTO create(PersonDTO personDTO);

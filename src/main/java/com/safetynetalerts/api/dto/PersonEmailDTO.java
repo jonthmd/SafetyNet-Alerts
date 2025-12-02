@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * DTO used to represent a set of emails.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

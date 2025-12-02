@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO used to represent the fire station model.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

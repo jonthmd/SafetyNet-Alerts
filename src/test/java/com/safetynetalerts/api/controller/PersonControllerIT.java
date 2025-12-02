@@ -33,25 +33,19 @@ public class PersonControllerIT {
 
     @Test
     void testGetChildren() throws Exception {
-        mockMvc.perform(get("/person/childAlert").param("address", "1509 Culver St"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void testGetPhones() throws Exception {
-        mockMvc.perform(get("/person/phoneAlert").param("fireStation","3"))
+        mockMvc.perform(get("/childAlert").param("address", "1509 Culver St"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void testGetInfoLastName() throws Exception {
-        mockMvc.perform(get("/person").param("InfoLastName", "Boyd"))
+        mockMvc.perform(get("/personInfo").param("lastName", "Boyd"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void testGetEmails() throws Exception {
-        mockMvc.perform(get("/person/communityEmail").param("city", "Culver"))
+        mockMvc.perform(get("/communityEmail").param("city", "Culver"))
                 .andExpect(status().isOk());
     }
 

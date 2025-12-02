@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ *Implementations of the fire station service interface.
+ */
 @Service
 public class MedicalRecordServiceImpl implements MedicalRecordService {
 
@@ -21,6 +24,10 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
 
+    /**
+     * Retrieves a list of medical records with their information.
+     * @return A list of MedicalRecordDTO.
+     */
     @Override
     public List<MedicalRecordDTO> getAll() {
         return dataRepository.getMedicalRecords()
@@ -29,6 +36,12 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
                 .toList();
     }
 
+    /**
+     * Searches a medical record with the specified first name and last name.
+     * @param firstName The first name of the medical record's person.
+     * @param lastName The last name of the medical record's person.
+     * @return The matching MedicalRecordDTO.
+     */
     @Override
     public MedicalRecordDTO getByFirstNameAndLastName(String firstName, String lastName) {
         return dataRepository.getMedicalRecords()
@@ -39,6 +52,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
                 .orElse(null);
     }
 
+    /**
+     * Creates a new medical record.
+     * @param medicalRecordDTO Mapped object containing the person details to be created.
+     * @return MedicalRecordDTO, the created medical record.
+     */
     @Override
     public MedicalRecordDTO create(MedicalRecordDTO medicalRecordDTO) {
         MedicalRecord medicalRecord = medicalRecordMapper.medicalRecordDtoToMedicalRecord(medicalRecordDTO);
@@ -46,6 +64,13 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         return medicalRecordMapper.medicalRecordToMedicalRecordDto(medicalRecord);
     }
 
+    /**
+     * Updates an existing medical record based on first name, last name and medicalRecordDTO.
+     * @param firstName The first name of the person to update.
+     * @param lastName The last name of the person to update.
+     * @param medicalRecordDTO Mapped object containing the medical record details to be updated.
+     * @return MedicalRecordDTO, the updated medical record.
+     */
     @Override
     public MedicalRecordDTO update(String firstName, String lastName, MedicalRecordDTO medicalRecordDTO) {
         return dataRepository.getMedicalRecords()
@@ -61,6 +86,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
                 .orElse(null);
     }
 
+    /**
+     * Deletes an existing medical record based on the first name and last name of the person.
+     * @param firstName The first name of the person.
+     * @param lastName The last name of the person.
+     */
     @Override
     public void delete(String firstName, String lastName) {
          dataRepository.getMedicalRecords()

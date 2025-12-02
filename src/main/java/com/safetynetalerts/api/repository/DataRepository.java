@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Repository allowing the loading and the access to the application data stored in the JSON file in resources package.
+ */
 @Component
 public class DataRepository {
 

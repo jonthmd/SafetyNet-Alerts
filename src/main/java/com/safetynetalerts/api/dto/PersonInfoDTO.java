@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
+/**
+ * DTO used to represent information person including address, age,
+ * email and medical record.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

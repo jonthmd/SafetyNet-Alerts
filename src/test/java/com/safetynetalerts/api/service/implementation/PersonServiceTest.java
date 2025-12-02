@@ -4,7 +4,6 @@ import com.safetynetalerts.api.dto.*;
 import com.safetynetalerts.api.mapper.MedicalRecordMapper;
 import com.safetynetalerts.api.mapper.PersonChildMapper;
 import com.safetynetalerts.api.mapper.PersonMapper;
-import com.safetynetalerts.api.model.FireStation;
 import com.safetynetalerts.api.model.MedicalRecord;
 import com.safetynetalerts.api.model.Person;
 import com.safetynetalerts.api.repository.DataRepository;
@@ -135,26 +134,6 @@ public class PersonServiceTest {
         verify(medicalRecordMapper).medicalRecordToMedicalRecordDto(medicalRecord);
         assertThat(result.getChildDTOList()).hasSize(0);
         assertThat(result.getFamilyDTOList()).hasSize(1);
-    }
-
-    @Test
-    void getPhonesTest(){
-        //GIVEN
-        FireStation fireStation = new FireStation("1509 Culver St", "3");
-        List<FireStation> fireStationList = List.of(fireStation);
-        when(dataRepository.getFireStations()).thenReturn(fireStationList);
-
-        Person person = new Person("Jon", "TH", "1509 Culver St", "", "", "11", "");
-        List<Person> personList = List.of(person);
-        when(dataRepository.getPersons()).thenReturn(personList);
-
-        //WHEN
-        PersonPhoneAlertDTO result = classUnderTest.getPhones("3");
-
-        //THEN
-        verify(dataRepository).getFireStations();
-        verify(dataRepository).getPersons();
-        assertThat(result.getPhone()).isEqualTo(Set.of("11"));
     }
 
     @Test

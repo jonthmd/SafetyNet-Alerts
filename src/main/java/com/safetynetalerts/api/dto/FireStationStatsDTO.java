@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * DTO used to represent a list of children and a list of adults.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

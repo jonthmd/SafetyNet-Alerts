@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+/**
+ * DTO used to represent a child with first name, last name and age.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

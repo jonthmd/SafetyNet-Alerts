@@ -2,7 +2,6 @@ package com.safetynetalerts.api.service.implementation;
 
 import com.safetynetalerts.api.dto.*;
 import com.safetynetalerts.api.mapper.*;
-import com.safetynetalerts.api.model.FireStation;
 import com.safetynetalerts.api.model.Person;
 import com.safetynetalerts.api.repository.DataRepository;
 import com.safetynetalerts.api.service.PersonService;
@@ -16,6 +15,9 @@ import java.util.stream.Collectors;
 
 import static com.safetynetalerts.api.utils.DateFormatterUtil.calculateAge;
 
+/**
+ * Implementations of the person service interface.
+ */
 @Service
 public class PersonServiceImpl implements PersonService {
 
@@ -31,7 +33,10 @@ public class PersonServiceImpl implements PersonService {
         this.medicalRecordMapper = medicalRecordMapper;
     }
 
-
+    /**
+     * Retrieves a list of persons with their information.
+     * @return A list of PersonDTO.
+     */
     @Override
     public List<PersonDTO> getAll() {
         return dataRepository.getPersons()
@@ -40,6 +45,12 @@ public class PersonServiceImpl implements PersonService {
                 .toList();
     }
 
+    /**
+     * Searches a person by first name and last name.
+     * @param firstName The first name of the person.
+     * @param lastName The last name of the person.
+     * @return The matching PersonDTO.
+     */
     @Override
     public PersonDTO getByFirstNameAndLastName(String firstName, String lastName) {
         return dataRepository.getPersons()
@@ -50,6 +61,11 @@ public class PersonServiceImpl implements PersonService {
                 .orElse(null);
     }
 
+    /**
+     * Retrieves children and adults living at the specified address.
+     * @param address The specified address used to filter persons.
+     * @return PersonChildAlertDTO containing a children list with age, and an adults list.
+     */
     @Override
     public PersonChildAlertDTO getChildren(String address){
         List<PersonChildDTO> listPersons = dataRepository.getPersons()
@@ -94,23 +110,11 @@ public class PersonServiceImpl implements PersonService {
         return new PersonChildAlertDTO(children, adults);
     }
 
-    @Override
-    public PersonPhoneAlertDTO getPhones(String stationNumber){
-        List<String> listAddresses = dataRepository.getFireStations()
-                .stream()
-                .filter(fireStation -> fireStation.getStation().equals(stationNumber))
-                .map(FireStation::getAddress)
-                .toList();
-
-        Set<String> listPhones = dataRepository.getPersons()
-                .stream()
-                .filter(person -> listAddresses.contains(person.getAddress()))
-                .map(Person::getPhone)
-                .collect(Collectors.toSet());
-
-        return new PersonPhoneAlertDTO(listPhones);
-    }
-
+    /**
+     * Retrieves a persons list with their data : address, age, email and medical record.
+     * @param lastName The last name of the person.
+     * @return PersonInfoLastNameDTO, a list of PersonInfoDTO containing a person info and medical record.
+     */
     @Override
     public PersonInfoLastNameDTO getInfoLastName(String lastName) {
         List<PersonDTO> personDTOList = dataRepository.getPersons()
@@ -153,6 +157,11 @@ public class PersonServiceImpl implements PersonService {
         return personInfoLastNameDTO;
     }
 
+    /**
+     * Retrieves an email list of people living at the specified city.
+     * @param city The specified city to retrieve emails.
+     * @return PersonEmailDTO containing a list of emails.
+     */
     @Override
     public PersonEmailDTO getEmails(String city) {
         Set<String> emailsList = dataRepository.getPersons()
@@ -164,6 +173,11 @@ public class PersonServiceImpl implements PersonService {
         return new PersonEmailDTO(emailsList);
     }
 
+    /**
+     * Creates a new person.
+     * @param personDTO Mapped object containing the person details to be created.
+     * @return PersonDTO, the created person.
+     */
     @Override
     public PersonDTO create(PersonDTO personDTO) {
         Person person = personMapper.personDtoToPerson(personDTO);
@@ -171,6 +185,13 @@ public class PersonServiceImpl implements PersonService {
         return personMapper.personToPersonDto(person);
     }
 
+    /**
+     * Updates an existing person based on first name, last name and PersonDTO.
+     * @param firstName The first name of the person to update.
+     * @param lastName The last name of the person to update.
+     * @param personDTO Mapped object containing the person details to be updated.
+     * @return PersonDTO, the updated person.
+     */
     @Override
     public PersonDTO update(String firstName, String lastName, PersonDTO personDTO) {
         return dataRepository.getPersons()
@@ -188,6 +209,11 @@ public class PersonServiceImpl implements PersonService {
                 .orElse(null);
     }
 
+    /**
+     * Deletes an existing person based on first name and last name.
+     * @param firstName The first name of the person.
+     * @param lastName The last name of the person.
+     */
     @Override
     public void delete(String firstName, String lastName) {
         dataRepository.getPersons()

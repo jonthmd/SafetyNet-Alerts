@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Model representing a person saved in the JSON.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

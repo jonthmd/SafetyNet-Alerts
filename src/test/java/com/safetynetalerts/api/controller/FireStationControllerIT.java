@@ -30,14 +30,20 @@ class FireStationControllerIT {
     }
 
     @Test
+    void testGetPhones() throws Exception {
+        mockMvc.perform(get("/phoneAlert").param("fireStation","3"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void testGetRecordsPersons() throws Exception {
-        mockMvc.perform(get("/fireStation/fire").param("address", "1509 Culver St"))
+        mockMvc.perform(get("/fire").param("address", "1509 Culver St"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void testGetFlood() throws Exception {
-        mockMvc.perform(get("/fireStation/flood/stations").param("stationNumbers", "3"))
+        mockMvc.perform(get("/flood/stations").param("stationNumbers", "3"))
                 .andExpect(status().isOk());
     }
 

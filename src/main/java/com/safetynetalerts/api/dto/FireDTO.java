@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * DTO used to represent a list of fire stations and a list of persons with phone number,
+ * age, and medical record.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

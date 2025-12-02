@@ -3,6 +3,7 @@ package com.safetynetalerts.api.service.implementation;
 import com.safetynetalerts.api.dto.*;
 import com.safetynetalerts.api.mapper.*;
 import com.safetynetalerts.api.model.FireStation;
+import com.safetynetalerts.api.model.Person;
 import com.safetynetalerts.api.repository.DataRepository;
 import com.safetynetalerts.api.service.FireStationService;
 import org.springframework.stereotype.Service;
@@ -10,12 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.safetynetalerts.api.utils.DateFormatterUtil.calculateAge;
 
 /**
- *
+ *Implementations of the fire station service interface.
  */
 @Service
 public class FireStationServiceImpl implements FireStationService {
@@ -34,7 +36,10 @@ public class FireStationServiceImpl implements FireStationService {
         this.personMapper = personMapper;
     }
 
-
+    /**
+     * Retrieves a list of fire stations with their information.
+     * @return A list of FireStationDTO.
+     */
     @Override
     public List<FireStationDTO> getAll() {
         return dataRepository.getFireStations()
@@ -43,6 +48,11 @@ public class FireStationServiceImpl implements FireStationService {
                 .toList();
     }
 
+    /**
+     * Searches a fire station with the specified address.
+     * @param address The specified address to search a fire station.
+     * @return The matching FireStationDTO.
+     */
     @Override
     public FireStationDTO getByAddress(String address) {
         return dataRepository.getFireStations()
@@ -53,6 +63,11 @@ public class FireStationServiceImpl implements FireStationService {
                 .orElse(null);
     }
 
+    /**
+     * Retrieves children and adults lists living at addresses covered by the station number.
+     * @param stationNumber The specified station number to retrieve information.
+     * @return FireStationStatsDTO, object containing a list of children and a list of adults.
+     */
     @Override
     public FireStationStatsDTO getByStationNumber(String stationNumber) {
         List<String> listAddresses = dataRepository.getFireStations()
@@ -100,6 +115,33 @@ public class FireStationServiceImpl implements FireStationService {
         return fireStationStatsDTO;
     }
 
+    /**
+     * Retrieves phone numbers for persons covered by the station number.
+     * @param stationNumber The specified station number.
+     * @return FireStationPhoneAlertDTO, a set of phone numbers.
+     */
+    @Override
+    public FireStationPhoneAlertDTO getPhones(String stationNumber){
+        List<String> listAddresses = dataRepository.getFireStations()
+                .stream()
+                .filter(fireStation -> fireStation.getStation().equals(stationNumber))
+                .map(FireStation::getAddress)
+                .toList();
+
+        Set<String> listPhones = dataRepository.getPersons()
+                .stream()
+                .filter(person -> listAddresses.contains(person.getAddress()))
+                .map(Person::getPhone)
+                .collect(Collectors.toSet());
+
+        return new FireStationPhoneAlertDTO(listPhones);
+    }
+
+    /**
+     * Retrieves all information of persons living at the address.
+     * @param address The specified address to retrieve person information.
+     * @return FireDTO, a list of persons with their addressed and the covered fire station.
+     */
     @Override
     public FireDTO getRecordsPersonByAddress(String address){
         List<String> stationsList = dataRepository.getFireStations()
@@ -148,6 +190,11 @@ public class FireStationServiceImpl implements FireStationService {
         return fireDTO;
     }
 
+    /**
+     * Retrieves addresses and persons living at covered by the specified station number(s).
+     * @param stationNumbers A list of station numbers to retrieves the covered homes.
+     * @return FireStationFloodDTO, a list of covered addresses and persons living at these homes.
+     */
     @Override
     public FireStationFloodDTO getHomes(List<String> stationNumbers) {
         List<String> listAddresses = dataRepository.getFireStations()
@@ -195,6 +242,11 @@ public class FireStationServiceImpl implements FireStationService {
         return fireStationFloodDTO;
     }
 
+    /**
+     * Creates a new fire station.
+     * @param fireStationDTO Mapped object containing the fire station details to be created.
+     * @return FireStationDTO, the created fire station.
+     */
     @Override
     public FireStationDTO create(FireStationDTO fireStationDTO) {
         FireStation fireStation = fireStationMapper.fireStationDtoToFireStation(fireStationDTO);
@@ -202,6 +254,12 @@ public class FireStationServiceImpl implements FireStationService {
         return fireStationMapper.fireStationToFireStationDto(fireStation);
     }
 
+    /**
+     * Updates an existing fire station based on address and fireStationDTO.
+     * @param address The address of the fire station to update.
+     * @param fireStationDTO Mapped object containing the fire station details to be updated.
+     * @return FireStationDTO, the updated fire station.
+     */
     @Override
     public FireStationDTO update(String address, FireStationDTO fireStationDTO) {
         return dataRepository.getFireStations()
@@ -215,6 +273,10 @@ public class FireStationServiceImpl implements FireStationService {
                 .orElse(null);
     }
 
+    /**
+     * Deletes an existing fire station based on the address.
+     * @param address The specified address.
+     */
     @Override
     public void delete(String address) {
         dataRepository.getFireStations()
