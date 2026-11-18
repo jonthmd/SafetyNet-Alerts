@@ -5,7 +5,9 @@ import com.safetynetalerts.api.service.FireStationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -44,7 +46,17 @@ public class FireStationController {
     @Operation(summary = "Get a fire station.", description = "Returns a station by entering address.")
     public FireStationDTO getFireStation(@PathVariable String address) {
         log.info("Start getFireStation() process...");
-        return fireStationService.getByAddress(address);
+
+        FireStationDTO fireStationDTO = fireStationService.getByAddress(address);
+
+        if (fireStationDTO == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Fire station not found"
+            );
+        }
+
+        return fireStationDTO;
     }
 
     /**
