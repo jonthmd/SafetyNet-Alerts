@@ -14,14 +14,14 @@
       "name": "FireStations",
       "item": [
         {
-          "name": "Get FireStation by address.",
+          "name": "Get FireStation by address",
           "event": [
             {
               "listen": "test",
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const data = pm.response.json();\nconst address1 = pm.environment.get(\"address1\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(data.address).to.eql(address1)\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(data).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(data.address).to.be.a(\"string\").and.not.empty;\n})"
+                  "const fireStationData = pm.response.json();\nconst address1 = pm.environment.get(\"address1\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(fireStationData.address).to.eql(address1)\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(fireStationData).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(fireStationData.address).to.be.a(\"string\").and.not.empty;\n})"
                 ]
               }
             }
@@ -50,7 +50,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const data = pm.response.text();\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n"
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n"
                 ]
               }
             }
@@ -89,7 +89,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const data = pm.response.json();\nconst address2 = pm.environment.get(\"address2\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(data.address).to.eql(address2)\n})\n\npm.test(\"Station is correct.\", function () {\n    pm.expect(data.station).to.eql(\"78\")\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(data).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(data.address).to.be.a(\"string\").and.not.empty;\n})"
+                  "const createdFireStationData = pm.response.json();\nconst address2 = pm.environment.get(\"address2\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(createdFireStationData.address).to.eql(address2)\n})\n\npm.test(\"Station is correct.\", function () {\n    pm.expect(createdFireStationData.station).to.eql(\"78\")\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(createdFireStationData).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(createdFireStationData.address).to.be.a(\"string\").and.not.empty;\n})"
                 ]
               }
             }
@@ -156,7 +156,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "const data = pm.response.json();\nconst address2 = pm.environment.get(\"address2\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(data.address).to.eql(address2)\n})\n\npm.test(\"Station is correct.\", function () {\n    pm.expect(data.station).to.eql(\"73\")\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(data).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(data.address).to.be.a(\"string\").and.not.empty;\n})"
+                  "const editedFireStationData = pm.response.json();\nconst address2 = pm.environment.get(\"address2\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(editedFireStationData.address).to.eql(address2)\n})\n\npm.test(\"Station is correct.\", function () {\n    pm.expect(editedFireStationData.station).to.eql(\"73\")\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(editedFireStationData).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(editedFireStationData.address).to.be.a(\"string\").and.not.empty;\n})"
                 ]
               }
             }
