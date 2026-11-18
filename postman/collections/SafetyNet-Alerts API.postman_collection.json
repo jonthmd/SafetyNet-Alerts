@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "286c9d5c-0de7-4e9a-a85c-caef73dff9b2",
-    "name": "MediLabo API",
+    "name": "SafetyNet-Alerts API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "60254420"
   },
