@@ -1,0 +1,216 @@
+{
+  "info": {
+    "_postman_id": "286c9d5c-0de7-4e9a-a85c-caef73dff9b2",
+    "name": "MediLabo API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60254420"
+  },
+  "item": [
+    {
+      "name": "Medical Records",
+      "item": []
+    },
+    {
+      "name": "FireStations",
+      "item": [
+        {
+          "name": "Get FireStation by address.",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();\nconst address1 = pm.environment.get(\"address1\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(data.address).to.eql(address1)\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(data).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(data.address).to.be.a(\"string\").and.not.empty;\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/fireStation/{{address1}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "fireStation",
+                "{{address1}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create FireStation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.text();\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"address\":\"5 allée Paul Éluard\",\n    \"station\": \"78\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/fireStation",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "fireStation"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get FireStation created",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();\nconst address2 = pm.environment.get(\"address2\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(data.address).to.eql(address2)\n})\n\npm.test(\"Station is correct.\", function () {\n    pm.expect(data.station).to.eql(\"78\")\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(data).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(data.address).to.be.a(\"string\").and.not.empty;\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/fireStation/{{address2}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "fireStation",
+                "{{address2}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit FireStation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"address\": \"5 allée Paul Éluard\",\n    \"station\": \"73\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/fireStation/{{address2}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "fireStation",
+                "{{address2}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get FireStation edited",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();\nconst address2 = pm.environment.get(\"address2\");\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200)\n})\n\npm.test(\"Address is correct.\", function () {\n    pm.expect(data.address).to.eql(address2)\n})\n\npm.test(\"Station is correct.\", function () {\n    pm.expect(data.station).to.eql(\"73\")\n})\n\npm.test(\"La réponse est au format JSON\", function () {\n    pm.response.to.be.json;\n})\n\npm.test(\"La réponse contient des données\", function () {\n    pm.expect(data).to.not.be.null;\n})\n\npm.test(\"Address is not empty\", function () {\n    pm.expect(data.address).to.be.a(\"string\").and.not.empty;\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/fireStation/{{address2}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "fireStation",
+                "{{address2}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete FireStation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"FireStation deleted.\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 204]);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/fireStation/{{address2}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "fireStation",
+                "{{address2}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Persons",
+      "item": []
+    }
+  ]
+}
