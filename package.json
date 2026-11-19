@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "newman": "^6.2.3",
+    "newman-reporter-htmlextra": "^1.23.1"
+  },
+
+  "scripts": {
+    "test:api": "NODE_PATH=/opt/homebrew/lib/node_modules newman run \"postman/collections/SafetyNet-Alerts API.postman_collection.json\" -e \"postman/environments/Local.postman_environment.json\" -r cli,htmlextra --reporter-htmlextra-export \"postman/reports/report.html\""
+  }
+}
