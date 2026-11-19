@@ -14,7 +14,7 @@
       "name": "FireStations",
       "item": [
         {
-          "name": "Get FireStation by address",
+          "name": "FireStation by address",
           "event": [
             {
               "listen": "test",
@@ -82,7 +82,7 @@
           "response": []
         },
         {
-          "name": "Get FireStation created",
+          "name": "FireStation created",
           "event": [
             {
               "listen": "test",
@@ -149,7 +149,7 @@
           "response": []
         },
         {
-          "name": "Get FireStation edited",
+          "name": "FireStation edited",
           "event": [
             {
               "listen": "test",
@@ -192,6 +192,35 @@
           ],
           "request": {
             "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/fireStation/{{address2}}",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "fireStation",
+                "{{address2}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FireStation deleted",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {\n    pm.response.to.have.status(404);\n})"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseURL}}/fireStation/{{address2}}",
