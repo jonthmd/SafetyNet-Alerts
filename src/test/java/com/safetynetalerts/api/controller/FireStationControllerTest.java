@@ -1,30 +1,53 @@
 package com.safetynetalerts.api.controller;
 
+import com.safetynetalerts.api.dto.FireStationDTO;
+import com.safetynetalerts.api.service.FireStationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class FireStationControllerIT {
+@WebMvcTest(FireStationController.class)
+class FireStationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
+    @MockitoBean
+    private FireStationService fireStationService;
+
     @Test
     void testGetAllFireStations() throws Exception {
+
+        //GIVEN
+        FireStationDTO fireStationDTO = new FireStationDTO();
+
+        //WHEN
+        when(fireStationService.getAll()).thenReturn(List.of(fireStationDTO));
+
+        //THEN
         mockMvc.perform(get("/fireStation/all"))
                 .andExpect(status().isOk());
     }
 
     @Test
     void testGetFireStation() throws Exception {
+
+        //GIVEN
+        FireStationDTO fireStationDTO = new FireStationDTO();
+
+        //WHEN
+        when(fireStationService.getByAddress("1509 Culver St")).thenReturn(fireStationDTO);
+
+        //THEN
         mockMvc.perform(get("/fireStation/{address}", "1509 Culver St"))
                 .andExpect(status().isOk());
     }
